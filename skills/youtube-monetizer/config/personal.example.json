@@ -1,0 +1,18 @@
+{
+  "creator": {
+    "name": "Your Real Legal Name",
+    "email": "tupacmafia911@gmail.com",
+    "youtube_channel_id": "",
+    "youtube_handle": ""
+  },
+  "payout": {
+    "primary_method": "paypal",
+    "paypal_email": "tupacmafia911@gmail.com",
+    "bank_account_last4": "",
+    "gumroad_email": "tupacmafia911@gmail.com"
+  },
+  "products": {
+    "main_gumroad_url": "",
+    "affiliate_program_url": ""
+  }
+}

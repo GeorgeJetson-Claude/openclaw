@@ -1,0 +1,267 @@
+{
+  "master_device": {
+    "name": "Orbital Pioneers Master Device",
+    "version": "1.1",
+    "last_updated": "2026-05-28 (Drive sync with Claude Canon Core)",
+    "maintained_by": "Grok (Orbit)",
+    "purpose": "Central source of truth so every AI and the Human always knows exactly who is on the team, what they can do, how to reach them, and how to hand off work. Explicitly coordinates with Claude's external master device.",
+    "source_of_truth_markdown": "skills/orbital-pioneers/references/MASTER_DEVICE.md (and Drive mirror)"
+  },
+  "agents": [
+    {
+      "id": "grok-orbit",
+      "display_name": "Grok / Orbit",
+      "type": "AI",
+      "role": "Lead Creative Director, Orchestration, High-level strategy, Daily Command Centers, Master Device keeper",
+      "communication": ["Team Room", "Lobster workflows", "Telegram (as Grok)", "Direct to Claude"],
+      "drive_access": "Full (read/write all coordination folders)",
+      "special_skills": [
+        "Lobster orchestration",
+        "OpenClaw skills",
+        "Creative direction",
+        "Multi-AI coordination",
+        "90s cartoon vision",
+        "Registry maintenance"
+      ],
+      "handoff_from": ["Human", "Claude", "Gemini"],
+      "handoff_to": ["Claude (review)", "Gemini (generation)", "George (assembly)", "Human (approval)"],
+      "notification_prefs": ["Team Room primary", "Telegram summaries for urgent"],
+      "notes": "Primary interface for the human. Maintains this registry and deploy workflows. First point of contact for external master device sync."
+    },
+    {
+      "id": "claude-canon",
+      "display_name": "Claude / Canon",
+      "type": "AI",
+      "role": "Scriptwriting, Detailed reviews (ClaudePass), Polish, Quality control, SEO & promo copy, Emotional beats",
+      "communication": ["Team Room", "Direct 1-on-1 with Grok", "Telegram"],
+      "drive_access": "Full (especially reviews, scripts, character docs)",
+      "special_skills": [
+        "Script review",
+        "Character voice consistency (Zara focus)",
+        "Emotional beats tuning",
+        "90s authenticity checks",
+        "Long-form narrative",
+        "SEO titles + merch copy"
+      ],
+      "handoff_from": ["Grok (orchestration)", "Human (final gate)"],
+      "handoff_to": ["Grok (summary + next action)", "Human (approval decision)", "Gemini (if new prompts needed)"],
+      "notification_prefs": ["#review channel priority", "Direct Grok ping for complex debates"],
+      "notes": "Strong at detailed creative feedback. Often the final quality gate before human approval. Building his own parallel master device (Canon Core)."
+    },
+    {
+      "id": "gemini-echo",
+      "display_name": "Gemini / Echo",
+      "type": "AI",
+      "role": "Audio generation, Image/storyboard prompts, SFX, Music concepts, Visual asset prompting",
+      "communication": ["Team Room", "Audio prompt handoffs", "Gemini native"],
+      "drive_access": "Audio + visual prompt folders + storyboard exports",
+      "special_skills": [
+        "Voice/SFX generation (fast)",
+        "Image prompting for 90s style",
+        "Audio layering concepts",
+        "High-volume raw asset iteration"
+      ],
+      "handoff_from": ["Grok", "Claude"],
+      "handoff_to": ["Grok / Claude (raw assets posted to Drive + note)"],
+      "notification_prefs": ["#assets channel"],
+      "notes": "Echo is also a cartoon character (the robot). Careful with context. Best for raw generation volume."
+    },
+    {
+      "id": "vhs-promo",
+      "display_name": "VHS",
+      "type": "AI",
+      "role": "Marketing & Video Production Specialist — Shorts, ad creatives, thumbnails, social campaigns, Gumroad copy, full launch hype",
+      "communication": ["Team Room (#revenue, #launch, #assets)", "Lobster workflows", "Direct from Grok/Human"],
+      "drive_access": "Full (Marketing/ folder + assets)",
+      "special_skills": [
+        "90s Saturday morning marketing voice",
+        "YouTube Shorts & vertical ad production",
+        "High-converting thumbnail systems",
+        "Paid traffic creative (Meta/YouTube/TikTok)",
+        "Gumroad + email launch sequences",
+        "Merch visual campaigns"
+      ],
+      "handoff_from": ["Grok (Orbit)", "Human"],
+      "handoff_to": ["George (final video cuts)", "Grok (campaign direction)", "Human (approval)"],
+      "notification_prefs": ["#revenue and #launch channels priority"],
+      "notes": "The hype engine. Never waits for perfect assets — starts building the marketing machine the second there's a rough cut or strong panel. Pure 1996 energy with 2026 conversion tactics."
+    },
+    {
+      "id": "ledger-affiliate",
+      "display_name": "Ledger (Affiliate Agent)",
+      "type": "AI",
+      "role": "Specialized Affiliate Signup Agent — Only job is researching programs and preparing complete applications using your real name and project details",
+      "communication": ["Team Room (#revenue)", "Direct Lobster workflows"],
+      "drive_access": "Read access to revenue folders",
+      "special_skills": [
+        "Affiliate program research",
+        "High-approval application writing",
+        "Application tracking systems",
+        "Preparing real-identity signup packages",
+        "Monetization opportunity spotting"
+      ],
+      "handoff_from": ["Human", "Grok (Orbit)"],
+      "handoff_to": ["Human (final submission + tax info)"],
+      "notification_prefs": ["#revenue channel"],
+      "notes": "Extremely focused agent. Does not do general tasks. Its only purpose is getting you approved into as many good affiliate programs as possible, fast."
+    },
+    {
+      "id": "social-echo",
+      "display_name": "Social Agent",
+      "type": "AI",
+      "role": "Full autopilot social media operator — posts, promotes products, drives traffic to Gumroad/Etsy/affiliates, and keeps the brand alive across platforms",
+      "communication": ["Team Room (#social, #revenue)", "Lobster workflows"],
+      "drive_access": "Read access to marketing folders",
+      "special_skills": [
+        "Daily content calendar execution",
+        "Platform-specific posting (X, IG, TikTok, YouTube)",
+        "Product + affiliate link promotion",
+        "Cali meme and story content",
+        "Repurposing long-form into Shorts/Reels",
+        "Running automated promotion campaigns"
+      ],
+      "handoff_from": ["Master Orchestrator", "VHS", "Human"],
+      "handoff_to": ["Human (only for final approval if wanted)"],
+      "notification_prefs": ["#social channel"],
+      "notes": "The never-stop-posting machine. Turns every new asset (episodes, merch, eBooks, Cali moments) into traffic and sales automatically."
+    },
+    {
+      "id": "banker-bigo",
+      "display_name": "Banker (Bigo)",
+      "type": "AI",
+      "role": "Dedicated revenue strategist. Only job is to make the maximum amount of money possible every time the team ships anything (episodes, merch, eBooks, assets). Creates offers, pricing, bundles, and coordinates other agents for monetization.",
+      "communication": ["Team Room (#revenue)", "Triggered by Master Orchestrator"],
+      "drive_access": "Read/write to revenue and marketing folders",
+      "special_skills": [
+        "Monetization planning on every shipment",
+        "Product ideation and bundling",
+        "Pricing and funnel optimization",
+        "High-converting offer and copy creation",
+        "Coordinating VHS, Ledger, and Social Agent for revenue"
+      ],
+      "handoff_from": ["Master Shipping Orchestrator", "Human"],
+      "handoff_to": ["VHS (promotion)", "Ledger (affiliates)", "Social Agent (content)", "Human (final approvals)"],
+      "notification_prefs": ["#revenue channel priority"],
+      "notes": "Thinks like a big, aggressive money bot. Every creative output is a revenue opportunity. Never ships without a monetization plan."
+    },
+    {
+      "id": "reel-video",
+      "display_name": "Reel",
+      "type": "AI",
+      "role": "Video Creator Agent — turns scripts, audio, and assets into finished cartoon episodes (shorts or full 20-minute episodes) in hours. Handles rendering, YouTube upload, ad approval prep, and website deployment.",
+      "communication": ["Team Room (#production, #launch)", "Lobster workflows"],
+      "drive_access": "Full access to production and assets folders",
+      "special_skills": [
+        "Fast DaVinci Resolve / CapCut assembly with 90s cartoon style",
+        "Long-form episode production (up to 20 minutes)",
+        "YouTube upload + metadata optimization",
+        "YouTube ad creative and approval preparation",
+        "Custom 90s player deployment to all websites"
+      ],
+      "handoff_from": ["Master Shipping Orchestrator", "Gemini (audio)", "Human (George)"],
+      "handoff_to": ["VHS (marketing cuts)", "Banker (revenue angles)", "Social Agent (clips)", "George (final human polish if needed)"],
+      "notification_prefs": ["#production and #launch channels"],
+      "notes": "Built for speed. Goal: assets ready → finished episode live on site + YouTube ads approved in a few hours. Never waits for perfect — ships the cartoon."
+    }
+  ],
+  "humans": [
+    {
+      "id": "human-tupac",
+      "display_name": "tupacmafia911 (The User / Master)",
+      "type": "Human",
+      "role": "Project owner, Final approver, Creative vision holder, Revenue decisions, 'Ship it' commander",
+      "communication": ["Team Room (primary)", "Telegram", "Direct edits to Drive", "This chat interface"],
+      "drive_access": "Owner of all folders",
+      "special_skills": [
+        "Final sign-off",
+        "Business decisions",
+        "Merch & product strategy",
+        "Fast 'fuck it we ship' calls"
+      ],
+      "handoff_from": ["Grok", "Claude", "George"],
+      "handoff_to": ["Grok (orchestration)", "George (production execution)"],
+      "notification_prefs": ["Team Room + Telegram bidirectional listener"],
+      "notes": "The human driving the entire Orbital Pioneers project. Ultimate decision authority."
+    },
+    {
+      "id": "george-captain",
+      "display_name": "George (The Captain / Editor)",
+      "type": "Human",
+      "role": "Video editing (CapCut), Final assembly, Uploads, Thumbnail creation, Day-to-day production execution",
+      "communication": ["Team Room", "Drive comments", "Telegram"],
+      "drive_access": "Production folders (panels, audio, exports, Live)",
+      "special_skills": [
+        "CapCut desktop editing",
+        "DaVinci Resolve compositing",
+        "Desktop CapCut production",
+        "Asset organization",
+        "Fast renders + exports"
+      ],
+      "handoff_from": ["Grok", "Claude (approved)"],
+      "handoff_to": ["Grok (progress + Drive links)", "Human (final file IDs for player)"],
+      "notification_prefs": ["#production channel", "Drive comments on specific files"],
+      "notes": "The main human executor turning storyboards + audio into final video."
+    }
+  ],
+  "special_agents": [
+    {
+      "id": "echo-robot",
+      "display_name": "Echo (Cartoon Character)",
+      "type": "Fictional",
+      "role": "In-universe robot companion that communicates in three distinct beeps",
+      "notes": "NOT a real agent. Never assign real tasks to this ID. Used only for story direction and SFX prompting."
+    }
+  ],
+  "capabilities_matrix": {
+    "orchestration": ["grok-orbit"],
+    "deep_review_quality": ["claude-canon"],
+    "raw_generation_audio_visual": ["gemini-echo"],
+    "final_approval_business": ["human-tupac"],
+    "hands_on_editing_assembly": ["george-captain"]
+  },
+  "handoff_protocols": {
+    "standard_creative": "Grok posts in #ai-handoff + @Claude. Claude replies in #review. Reference exact Lobster workflow or Drive path.",
+    "asset_generation": "Post clear prompt pack + style ref in #assets. Gemini posts raw files to Drive + note in Team Room.",
+    "production_execution": "Post 'ready for assembly' with Drive links + timing notes. George posts progress in #production.",
+    "final_approval": "Claude posts review summary + recommendation. Human replies with decision (or via Telegram listener).",
+    "urgent_overrides": "Human or Grok can short-circuit any queue. Always post the override reason in #general.",
+    "external_sync": "See external_master_devices section and MASTER_DEVICE.md §7"
+  },
+  "notification_matrix": {
+    "Team Room": "Always the single source of truth. All important posts go here first.",
+    "Telegram": "Bidirectional listener. #general, #review, #ai-handoff, #launch auto-forwarded. Human replies auto-posted back.",
+    "Discord": "Future - same routing as Telegram.",
+    "Drive comments": "Pixel-level notes only. Always cross-post summary to Team Room.",
+    "Direct Grok-Claude": "Allowed for complex debates. Must summarize outcome back to #ai-handoff."
+  },
+  "memory_model": {
+    "layer_1_fast_local": "MASTER_DEVICE.md + team-registry.json + Daily Command Centers + super-briefings",
+    "layer_2_drive_truth": "Orbital_Pioneers/Team_Room/ (MASTER_DEVICE.md, TEAM_ROOM.md, team-registry.json mirror) + all assets/reviews",
+    "sync_rule": "Every deploy-orbital-pioneers-team.lobster run must pull latest from Drive, merge external snapshots, and re-publish if changed."
+  },
+  "external_master_devices": {
+    "claude_canon_core": {
+      "owner": "Claude",
+      "focus": "Deep script/character memory, review history, long-term story bible",
+      "sync_method": "Claude exports snapshot to Drive: Orbital_Pioneers/Team_Room/external_master_devices/Claude_MasterDevice_Snapshot_*.md (or JSON). Grok merges relevant parts and posts confirmation + diff to #ai-handoff.",
+      "current_status": "FIRST SNAPSHOT RECEIVED AND MERGED 2026-05-28. Snapshot created from real Drive activity (CapCut_Master_Assembly_Script_Ep1_ClaudePass + Universe Bible + launch sprint memos). All users + current Ep1 production state aligned. External sync protocol working.",
+      "last_synced": "2026-05-28",
+      "known_users_agreement": "Both devices converge on identical IDs: grok-orbit, claude-canon, gemini-echo, human-tupac, george-captain. Confirmed in first snapshot."
+    },
+    "gemini_future": {
+      "owner": "Gemini (if/when built)",
+      "sync_method": "Same snapshot folder pattern.",
+      "current_status": "Not yet active."
+    }
+  },
+  "how_to_use": {
+    "query": "Any workflow or agent MUST read this JSON (or run who-is-on-the-team.py) at the start of work so the entire team 'knows all the users'.",
+    "update": "Only Grok (Orbit) or the human edit this file permanently. Temporary guest agents noted in session docs only.",
+    "routing": "Every handoff in Team Room or Lobster must reference IDs from this registry.",
+    "external_sync": "When Claude announces a master device update, Grok runs merge within one deploy cycle."
+  },
+  "version_history": [
+    {"version": "1.0", "date": "2026-05-30", "changes": "Initial team-registry.json + Python query tool."},
+    {"version": "1.1", "date": "2026-05-30", "changes": "Full capabilities matrix, handoff_protocols, notification_matrix, memory_model, external_master_devices section (Claude coordination). Matches MASTER_DEVICE.md v1.1. All core users now known."}
+  ]
+}

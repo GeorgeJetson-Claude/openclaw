@@ -1,0 +1,16 @@
+[Unit]
+Description=Orbital Pioneers Team Room Bidirectional Telegram Listener
+After=network.target
+
+[Service]
+Type=simple
+User=yourusername
+WorkingDirectory=/home/yourusername/projects/OpenClaw/skills/team-room
+Environment=TELEGRAM_BOT_TOKEN=your-telegram-bot-token-here
+Environment=TEAM_CHAT_ID=your-team-chat-id-here
+ExecStart=/usr/bin/python3 /home/yourusername/projects/OpenClaw/skills/team-room/scripts/telegram-reply-listener.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orbital Pioneers — Team Room</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 20px; line-height: 1.5; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 3px solid #64748b; padding-bottom: 10px; }
+    .logo { font-size: 1.4rem; font-weight: bold; color: #00f5ff; }
+    .post-box { background: #1e2937; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 2px solid #64748b; }
+    textarea { width: 100%; height: 100px; background: #0f172a; color: #e2e8f0; border: 1px solid #64748b; border-radius: 4px; padding: 10px; }
+    select, input { background: #0f172a; color: #e2e8f0; border: 1px solid #64748b; padding: 6px; border-radius: 4px; margin-right: 8px; }
+    button { background: #ff2e63; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    .message { background: #1e2937; padding: 12px; margin-bottom: 12px; border-left: 4px solid #00f5ff; border-radius: 4px; }
+    .meta { font-size: 0.8rem; color: #94a3b8; margin-bottom: 6px; }
+    .channel { font-weight: bold; color: #00f5ff; }
+    .status { background: #1e2937; padding: 10px; margin-bottom: 15px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">ORBITAL PIONEERS — TEAM ROOM</div>
+    <div>Adventure first. Family always.</div>
+  </div>
+
+  <div class="status">
+    <strong>Current Focus:</strong> <span id="focus">Loading...</span><br>
+    <strong>Last Updated:</strong> <span id="last-updated">Loading...</span>
+  </div>
+
+  <div class="post-box">
+    <h3>Post an Update</h3>
+    <select id="channel">
+      <option value="#general">#general</option>
+      <option value="#production">#production</option>
+      <option value="#review">#review</option>
+      <option value="#revenue">#revenue</option>
+      <option value="#launch">#launch</option>
+      <option value="#assets">#assets</option>
+      <option value="#ai-handoff">#ai-handoff</option>
+      <option value="#daily-briefings">#daily-briefings</option>
+      <option value="#drive-assets">#drive-assets</option>
+    </select>
+    <input type="text" id="author" placeholder="Your name / AI name" value="Human" style="width: 180px;">
+    <textarea id="message" placeholder="What’s the update or handoff?"></textarea>
+    <button onclick="postMessage()">Post to Team Room</button>
+    <small style="color:#64748b;">(Real version calls post-to-team-room.lobster + external bridge)</small>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <strong>Quick AI Handoffs:</strong>
+    <button onclick="quickHandoff('Grok')">Handoff to Grok</button>
+    <button onclick="quickHandoff('Claude')">Handoff to Claude</button>
+    <button onclick="quickHandoff('Gemini')">Handoff to Gemini</button>
+  </div>
+
+  <h3>Recent Messages</h3>
+  <div id="messages">
+    <!-- Messages will be loaded here from TEAM_ROOM.md -->
+    <div class="message">
+      <div class="meta"><strong>2026-05-30 — Grok</strong> in <span class="channel">#general</span></div>
+      <div>Team Room environment created inside the orbital-pioneers skill. All agents (Grok, Claude, Gemini) and the human now have a shared space to communicate bidirectionally.</div>
+    </div>
+    <!-- More messages would be dynamically loaded from the actual TEAM_ROOM.md -->
+  </div>
+
+  <script>
+    // In a real deployment this would fetch and parse TEAM_ROOM.md
+    // For now it's a static demo + placeholder for the real system
+
+    function postMessage() {
+      const channel = document.getElementById('channel').value;
+      const author = document.getElementById('author').value || 'Anonymous';
+      const message = document.getElementById('message').value.trim();
+
+      if (!message) {
+        alert("Please write a message first.");
+        return;
+      }
+
+      // In real use this would call the Lobster workflow:
+      // openclaw taskflow run .../post-to-team-room.lobster --input channel=... etc.
+
+      const div = document.createElement('div');
+      div.className = 'message';
+      div.innerHTML = `
+        <div class="meta"><strong>${new Date().toISOString().slice(0,16).replace('T',' ')} — ${author}</strong> in <span class="channel">${channel}</span></div>
+        <div>${message.replace(/\n/g, '<br>')}</div>
+      `;
+      document.getElementById('messages').prepend(div);
+
+      document.getElementById('message').value = '';
+      alert("Message posted (demo). In production this calls the Lobster post workflow, updates Drive, and bridges to Telegram/Discord.");
+    }
+
+    function quickHandoff(targetAI) {
+      const msg = prompt(`Handoff message to ${targetAI}:`);
+      if (!msg) return;
+
+      document.getElementById('channel').value = '#ai-handoff';
+      document.getElementById('author').value = 'Human';
+      document.getElementById('message').value = `@${targetAI} — ${msg}`;
+      postMessage();
+    }
+
+    // Demo: Load current focus from the room
+    document.getElementById('focus').textContent = "Ep1 launch + full AI team deployment";
+    document.getElementById('last-updated').textContent = "Just now (via new Team Room environment)";
+  </script>
+</body>
+</html>

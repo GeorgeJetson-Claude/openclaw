@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="manifest" href="manifest.json">
+    <title>Super Grok • One App</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e2937;
+            --accent: #22c55e;
+            --text: #f1f5f9;
+        }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 8px;
+            font-size: 15px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+            color: var(--accent);
+        }
+        .model-selector {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .model-btn {
+            flex: 1;
+            padding: 7px 4px;
+            border: 2px solid #334155;
+            background: var(--card);
+            color: white;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            text-align: center;
+            min-width: 58px;
+        }
+        .model-btn.active {
+            border-color: var(--accent);
+            background: #052e16;
+        }
+        .chat-container {
+            background: var(--card);
+            border-radius: 12px;
+            height: 55vh;
+            overflow-y: auto;
+            padding: 10px;
+            margin-bottom: 8px;
+            border: 1px solid #334155;
+        }
+        .message {
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            border-radius: 14px;
+            max-width: 82%;
+            line-height: 1.35;
+            font-size: 14px;
+        }
+        .user {
+            background: #166534;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+        .assistant {
+            background: #334155;
+            border-bottom-left-radius: 4px;
+        }
+        .input-area {
+            display: flex;
+            gap: 6px;
+        }
+        #prompt {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 9999px;
+            border: 2px solid #334155;
+            background: var(--card);
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
+        button {
+            background: var(--accent);
+            color: black;
+            border: none;
+            padding: 0 16px;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .status {
+            font-size: 11px;
+            opacity: 0.6;
+            text-align: center;
+            margin-top: 6px;
+        }
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .quick-btn {
+            font-size: 13px;
+            padding: 10px 8px;
+            background: #334155;
+            border: 1px solid #475569;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+        }
+        .quick-btn:active {
+            background: #475569;
+        }
+        #login-screen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+        #login-box {
+            background: var(--card);
+            padding: 24px;
+            border-radius: 16px;
+            width: 85%;
+            max-width: 320px;
+            text-align: center;
+        }
+        #login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 8px;
+            border: 2px solid #334155;
+            background: #0f172a;
+            color: white;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Screen -->
+    <div id="login-screen">
+        <div id="login-box">
+            <h2 style="margin:0 0 8px; color:#22c55e;">Super Grok</h2>
+            <p style="margin:0 0 16px; font-size:13px; opacity:0.7;">Enter your password</p>
+            <input type="password" id="password" placeholder="Password" onkeypress="if(event.key==='Enter') login()">
+            <button onclick="login()" style="width:100%; padding:12px;">Unlock</button>
+            <p style="font-size:11px; opacity:0.5; margin-top:12px;">Only you can access this</p>
+        </div>
+    </div>
+
+    <div class="header">
+        <h1>Super Grok</h1>
+        <p>One free page • Phone • Chromebook • All AIs + Tools</p>
+    </div>
+
+    <div class="model-selector">
+        <div class="model-btn active" onclick="selectModel('gemini', this)">Gemini</div>
+        <div class="model-btn" onclick="selectModel('claude', this)">Claude</div>
+        <div class="model-btn" onclick="selectModel('grok', this)">Grok</div>
+        <div class="model-btn" onclick="selectModel('openclaw', this)">OpenClaw</div>
+        <div class="model-btn" onclick="selectModel('terminal', this)">Terminal</div>
+    </div>
+
+    <!-- One-Tap Money Buttons -->
+    <div class="quick-actions">
+        <div class="quick-btn" onclick="quickAction('run_pipeline')">🚀 Run Money Pipeline</div>
+        <div class="quick-btn" onclick="quickAction('revenue_ideas')">💰 Revenue Ideas</div>
+        <div class="quick-btn" onclick="quickAction('log_payout')">📈 Log Real Payout</div>
+        <div class="quick-btn" onclick="quickAction('status')">📊 System Status</div>
+    </div>
+
+    <!-- Direct IFTTT 5LUV Controls (now live) -->
+    <div class="quick-actions" style="margin-top: 6px; grid-template-columns: repeat(2, 1fr);">
+        <div class="quick-btn" onclick="fire5LUV()" style="background:#eab308; color:#111;">📡 Fire 5LUV Webhook</div>
+        <div class="quick-btn" onclick="quickAction('fire_5luv')" style="background:#eab308; color:#111;">📲 Notify via 5LUV</div>
+    </div>
+
+    <!-- SUPER GROK PUBLISH CONTROLS - Grok on Phone -->
+    <div style="margin-top:12px; font-size:11px; opacity:0.7; text-align:center;">SUPER GROK PUBLISHER (tap to ship)</div>
+    <div class="quick-actions" style="grid-template-columns: repeat(2, 1fr); gap:4px;">
+        <div class="quick-btn" onclick="quickAction('publish_5luvinc_brand')" style="background:#3b82f6; font-size:11px; padding:6px;">5LUVINC Brand</div>
+        <div class="quick-btn" onclick="quickAction('publish_orbital_landing')" style="background:#3b82f6; font-size:11px; padding:6px;">Orbital Landing</div>
+        <div class="quick-btn" onclick="quickAction('publish_magnacars_core')" style="background:#3b82f6; font-size:11px; padding:6px;">Magnacars Core</div>
+        <div class="quick-btn" onclick="quickAction('publish_creator_tools')" style="background:#3b82f6; font-size:11px; padding:6px;">Creator Tools</div>
+        <div class="quick-btn" onclick="quickAction('publish_dealer_funnel')" style="background:#3b82f6; font-size:11px; padding:6px;">Dealer Funnel</div>
+        <div class="quick-btn" onclick="quickAction('publish_blueprint')" style="background:#3b82f6; font-size:11px; padding:6px;">Grandpa Blueprint</div>
+        <div class="quick-btn" onclick="quickAction('publish_merch')" style="background:#3b82f6; font-size:11px; padding:6px;">Merch Hub</div>
+        <div class="quick-btn" onclick="quickAction('publish_all')" style="background:#ef4444; font-size:11px; padding:6px; font-weight:700;">🚀 PUBLISH ALL 7</div>
+    </div>
+
+    <!-- FULL AI SHIP + SHOP MODE -->
+    <div style="margin-top:16px;">
+        <div class="quick-btn" onclick="quickAction('full_auto_ship_now')" 
+             style="background:#ef4444; color:white; font-weight:800; width:100%; padding:14px; border-radius:12px; font-size:13px;">
+            🚀 FULL AUTO SHIP NOW
+        </div>
+        <div style="font-size:10px; text-align:center; margin-top:4px; opacity:0.6;">
+            AI does everything possible. Free. Ship all today.
+        </div>
+
+        <div class="quick-btn" onclick="quickAction('full_ship_shop_mode')" 
+             style="background:#7c3aed; color:white; font-weight:700; width:100%; margin-top:8px; padding:10px; border-radius:12px;">
+            🤖 Full Ship + Shop Mode
+        </div>
+
+        <div class="quick-btn" onclick="quickAction('prepare_monetization')" 
+             style="background:#f59e0b; color:#111; font-weight:700; width:100%; margin-top:8px; padding:10px; border-radius:12px; font-size:12px;">
+            💰 Prepare Shopping / Revenue
+        </div>
+
+        <div class="quick-btn" onclick="window.open('https://quotemyroofer.vercel.app', '_blank')" 
+             style="background:#0ea5e9; color:white; font-weight:700; width:100%; margin-top:8px; padding:10px; border-radius:12px; font-size:12px;">
+            🏠 Quote My Roofer — LIVE (Vercel Free URL)
+        </div>
+
+        <!-- Quote My Roofer Quick Actions -->
+        <div style="margin-top:12px; font-size:11px; opacity:0.7; text-align:center;">QUOTE MY ROOFER (LIVE ON VERCEL)</div>
+        <div class="quick-btn" onclick="quickAction('quote_roofer_status')" 
+             style="background:#22c55e; color:#111; font-weight:700; width:100%; padding:10px; border-radius:12px; font-size:12px;">
+            🏠 Quote My Roofer Status + Emails
+        </div>
+        <div class="quick-btn" onclick="window.open('https://quotemyroofer.vercel.app', '_blank')" 
+             style="background:#22c55e; color:#111; font-weight:700; width:100%; margin-top:6px; padding:10px; border-radius:12px; font-size:12px;">
+            🌐 Open Live Site (Test Form)
+        </div>
+
+        <!-- Orbital Pioneers EP1 Player -->
+        <div style="margin-top:16px; font-size:11px; opacity:0.7; text-align:center;">ORBITAL PIONEERS — EP1 PLAYER</div>
+        <div class="quick-btn" onclick="window.open('https://orbital-pioneers-live.vercel.app', '_blank')" 
+             style="background:#f43f5e; color:white; font-weight:700; width:100%; padding:12px; border-radius:12px;">
+            🎥 Open EP1 Player (after deploy)
+        </div>
+        <div class="quick-btn" onclick="window.open('https://vercel.com/dashboard', '_blank')" 
+             style="background:#f43f5e; color:white; font-weight:600; width:100%; margin-top:6px; padding:10px; border-radius:12px; font-size:12px;">
+            🚀 Deploy EP1 (run deploy-ep1.sh first)
+        </div>
+        <div class="quick-btn" onclick="announceEP1()" 
+             style="background:#eab308; color:#111; font-weight:700; width:100%; margin-top:6px; padding:10px; border-radius:12px; font-size:12px;">
+            📣 Mark EP1 Deployed & Announce
+        </div>
+
+        <!-- Telegram AI Team Bot Controls -->
+        <div style="margin-top:12px; font-size:11px; opacity:0.7; text-align:center;">TELEGRAM AI TEAM BOT</div>
+        <div class="quick-btn" onclick="quickAction('telegram_bot_status')" 
+             style="background:#14b8a6; color:white; font-weight:700; width:100%; padding:10px; border-radius:12px; font-size:12px;">
+            📱 Telegram Bot Status
+        </div>
+        <div class="quick-btn" onclick="quickAction('start_telegram_bot')" 
+             style="background:#14b8a6; color:white; font-weight:700; width:100%; margin-top:6px; padding:10px; border-radius:12px; font-size:12px;">
+            ▶️ Start Telegram AI Bot
+        </div>
+    </div>
+
+    <div id="chat" class="chat-container"></div>
+
+    <div class="input-area">
+        <input type="text" id="prompt" placeholder="Type command or prompt..." 
+               onkeypress="if(event.key === 'Enter') sendMessage()">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <div class="status" id="status">Connected • Free • Tap to install on home screen</div>
+
+    <script>
+        let currentModel = 'gemini';
+        const chat = document.getElementById('chat');
+        let sessionPassword = '';
+
+        function selectModel(model, element) {
+            document.querySelectorAll('.model-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            currentModel = model;
+            document.getElementById('status').innerText = `Using ${model.toUpperCase()} • Free`;
+        }
+
+        function addMessage(text, isUser) {
+            const div = document.createElement('div');
+            div.className = `message ${isUser ? 'user' : 'assistant'}`;
+            div.innerHTML = text.replace(/\n/g, '<br>');
+            chat.appendChild(div);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('prompt');
+            const text = input.value.trim();
+            if (!text) return;
+
+            addMessage(text, true);
+            input.value = '';
+
+            const status = document.getElementById('status');
+            status.innerText = 'Thinking...';
+
+            try {
+                const res = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-App-Password': sessionPassword 
+                    },
+                    body: JSON.stringify({ model: currentModel, prompt: text })
+                });
+                const data = await res.json();
+                addMessage(data.response, false);
+            } catch (err) {
+                addMessage("Error connecting to backend. Is app.py running?", false);
+            }
+            status.innerText = `Using ${currentModel.toUpperCase()} • Free`;
+        }
+
+        function quickAction(action) {
+            fetch('/chat', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-App-Password': sessionPassword 
+                },
+                body: JSON.stringify({ model: 'system', action: action })
+            })
+            .then(r => r.json())
+            .then(data => {
+                addMessage(data.response, false);
+            });
+        }
+
+        function fire5LUV() {
+            const msg = prompt("Message to send via 5LUV IFTTT webhook?", "Ep1 update from phone");
+            if (!msg) return;
+            fetch('/chat', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-App-Password': sessionPassword 
+                },
+                body: JSON.stringify({ model: 'system', action: 'fire_5luv', message: msg })
+            })
+            .then(r => r.json())
+            .then(data => {
+                addMessage(data.response, false);
+            });
+        }
+
+        function announceEP1() {
+            const playerURL = 'https://orbital-pioneers-live.vercel.app';
+            const text = `🎉 EP1 is now live on the player!\n\n${playerURL}\n\nDeployed via full auto ship pipeline.`;
+            
+            // Fire 5LUV IFTTT
+            fetch('/chat', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-App-Password': sessionPassword 
+                },
+                body: JSON.stringify({ model: 'system', action: 'fire_5luv', message: 'EP1 is now live on the player!' })
+            });
+
+            // Show ready-to-copy announcement
+            addMessage(`📣 Announcement ready (copied to clipboard):\n\n${text}`, false);
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(text).catch(() => {});
+            
+            // Open player
+            setTimeout(() => {
+                window.open(playerURL, '_blank');
+            }, 800);
+        }
+
+        function quickCommand(text) {
+            document.getElementById('prompt').value = text;
+            sendMessage();
+        }
+
+        async function login() {
+            const pw = document.getElementById('password').value;
+            const res = await fetch('/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({password: pw})
+            });
+            
+            if (res.ok) {
+                sessionPassword = pw;
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('status').innerText = 'Unlocked • Tap a model';
+                addMessage("Unlocked! All AIs + your 5LUVINC money tools are ready.", false);
+            } else {
+                alert("Wrong password");
+            }
+        }
+
+        // Make it installable as PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(() => {});
+            });
+        }
+
+        // Welcome + install prompt
+        window.onload = () => {
+            if (!sessionStorage.getItem('pw')) {
+                // Password screen is shown by default
+            }
+            setTimeout(() => {
+                const status = document.getElementById('status');
+                if (status) status.innerText = 'Connected • Free • Tap browser menu → Add to Home Screen';
+            }, 8000);
+        }
+    </script>
+</body>
+</html>
